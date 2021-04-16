@@ -35,7 +35,7 @@ function sendLocation(){
 }
 
 
-	 
+	 var $ = window.$ || window.jQuery;
 	 
 $(document).ready(function() {
 	sendLocation();
@@ -119,7 +119,7 @@ $(document).ready(function() {
 	// simply adjust the buttonContainer css selector
 	window.addEventListener("load", function () {
 		
-                var $ = window.$ || window.jQuery;
+                
 		if ($) {
 			$(".mydivision").last().replaceWith("<a style='color:hotpink' href='javascript:enterServiceNumber();'>CoBrowse for Marco</a>");
 			swal.close();
