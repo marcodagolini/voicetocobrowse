@@ -2,7 +2,8 @@
  <head>
 
 
-
+<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.1/sweetalert.min.js'></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.1/sweetalert.min.css">
 	 
 	 
 <!-- BEGIN LivePerson Monitor. -->
@@ -36,6 +37,101 @@ function sendLocation(){
 	 
 $(document).ready(function() {
 	sendLocation();
+	
+	
+
+
+<script type="text/javascript">
+	/**
+	 * Requests a CoBrowse session using an agent's service id. This can be used in phone-only scenarios when
+	 * CoBrowse cannot be started via chat.
+	 *
+	 * Example Usage: requestCobrowse("123456");
+	 * @param serviceId
+	 */
+	function requestCobrowse(serviceId) {
+		console.log("requestCobrowse");
+		lpTag.taglets.cobrowse.loadApi(function (visitorApi) {
+
+			console.log("CoBrowse visitor API loaded");
+
+			visitorApi.once("sessionRejected", function () {
+				alert("The service number is invalid.");
+			});
+
+			visitorApi.once("sessionOffered", function (event) {
+				console.log("Agent answered the request and offers a CoBrowse session");
+				var automaticallyAcceptOffer = true; // Set to false if you would like to ask the visitor to confirm the session start.
+
+				if (automaticallyAcceptOffer || confirm("Would you like to start a CoBrowse session with '" + event.agentAlias + "'?")) {
+					visitorApi.acceptSupportOffer(event);
+				} else {
+					visitorApi.cancelSupportOffer(event);
+				}
+			});
+
+
+			function sessionReadyCallback(startEvent) {
+				if (startEvent) {
+					console.log("Session is ready and will be started shortly.");
+				}
+			}
+
+			visitorApi.requestSupport({serviceId: serviceId}, sessionReadyCallback);
+		});
+	}
+
+
+	/**
+	 * Example: Display a simple dialog for entering the service number. In non proof-of-concept
+	 * deployments the prompt should be replaced with a dialog that reflects the CI of the brand.
+	 *H
+	 * This method should be called to show the service dialog, e.g.
+	 * <button onclick=enterServiceNumber>Request Native Cobrowse</button>
+	 */
+	function enterServiceNumber() {
+
+		swal.setDefaults({confirmButtonColor: '#650360'});
+
+		swal({
+			title: "Request CoBrowse",
+			text: "Please enter the service number provided over the phone:",
+			type: "input",
+			showCancelButton: true,
+			closeOnConfirm: false,
+			animation: "slide-from-top",
+			inputPlaceholder: "Service Number"
+		}, function (serviceId) {
+			if (serviceId === false) return false;
+			if (serviceId === "") {
+				swal.showInputError("Please specify a service number!");
+				return false
+			}
+
+			swal.close();
+			requestCobrowse(serviceId);
+		});
+	}
+
+	// IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT
+	// To place the button in the menubar of the brand's website
+	// simply adjust the buttonContainer css selector
+	window.addEventListener("load", function () {
+		var buttonContainer = "#vfa-footer_top_center > div > div.vfa-footer_center_row > div:nth-child(4) > div.vfa-footer_center_row_title";
+                var $ = window.$ || window.jQuery;
+		if ($) {
+			$(buttonContainer).last().replaceWith("<a style='color:hotpink' href='javascript:enterServiceNumber();'>CoBrowse for Marco</a>");
+			swal.close();
+		}
+	});
+
+
+</script>
+	
+	
+	
+	
+	
 });
   
 </script>
