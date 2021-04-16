@@ -11,8 +11,35 @@
 <!-- END LivePerson Monitor. -->
  
 
+<script>
+	
+	
+	
+function sendLocation(){
+	
+	setTimeout(function(){
+		var CurrentLocation = window.location.href;
+		lpTag.newPage(CurrentLocation, {section: "mdwhatsapp"});
+		
+		lpTag.sdes.push({
+			"type": "ctmrinfo",
+			"info": {
+				customerId: '1'
+			}
+		});
+		
+	}, 3000);
+	
+}
 
+
+	 
+	 
+$(document).ready(function() {
+	sendLocation();
+});
   
+</script>
  
  
  <title>voice to cobrowse</title>
