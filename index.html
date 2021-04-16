@@ -117,10 +117,10 @@ $(document).ready(function() {
 	// To place the button in the menubar of the brand's website
 	// simply adjust the buttonContainer css selector
 	window.addEventListener("load", function () {
-		var buttonContainer = "#vfa-footer_top_center > div > div.vfa-footer_center_row > div:nth-child(4) > div.vfa-footer_center_row_title";
+		
                 var $ = window.$ || window.jQuery;
 		if ($) {
-			$(buttonContainer).last().replaceWith("<a style='color:hotpink' href='javascript:enterServiceNumber();'>CoBrowse for Marco</a>");
+			$(".mydivision").last().replaceWith("<a style='color:hotpink' href='javascript:enterServiceNumber();'>CoBrowse for Marco</a>");
 			swal.close();
 		}
 	});
@@ -144,7 +144,7 @@ $(document).ready(function() {
  <body>
   
 
- 
+	 <div class="mydivision"></div>
 
  	
 
